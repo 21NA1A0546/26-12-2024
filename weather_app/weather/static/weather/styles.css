@@ -1,0 +1,57 @@
+/* weather/static/weather/styles.css */
+body {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+text-align: center;
+/* weather/static/weather/styles.css */
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+.error {
+    color: red;
+    margin-bottom: 20px;
+}
+
+.weather-grid {
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    gap: 10px;
+}
+
+.weather-row {
+    display: contents; /* This enables the grid layout for dynamic rows */
+}
+
+.weather-row.header {
+    font-weight: bold;
+    background-color: #f0f0f0;
+}
+
+.weather-row div {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.weather-row div:nth-child(odd) {
+    background-color: #f9f9f9;
+}

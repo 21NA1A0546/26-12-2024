@@ -1,0 +1,38 @@
+<!-- weather/templates/weather/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Prediction</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'weather/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Prediction</h1>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="location" placeholder="Enter location">
+            <button type="submit">Get Weather</button>
+        </form>
+        <button onclick="location.href='{% url 'compare' %}'">Compare Places</button>
+        
+        {% if error %}
+            <p class="error">Error: {{ error }}</p>
+        {% elif weather_data %}
+            <div class="weather-info">
+                <h2>Weather for {{ location }}</h2>
+                <p>Temperature: {{ weather_data.temperature }} °C</p>
+                <p>Feels like: {{ weather_data.temperatureApparent }} °C</p>
+                <p>Pressure (Surface Level): {{ weather_data.pressureSurfaceLevel }} hPa</p>
+                <p>Pressure (Sea Level): {{ weather_data.pressureSeaLevel }} hPa</p>
+                <p>Precipitation Intensity: {{ weather_data.precipitationIntensity }} mm/h</p>
+                <p>Humidity: {{ weather_data.humidity }} %</p>
+                <p>Wind Speed: {{ weather_data.windSpeed }} m/s</p>
+                <p>Wind Direction: {{ weather_data.windDirection }} °</p>
+                <p>Rain Intensity: {{ weather_data.rainIntensity }} mm/h</p>
+                <p>Snow Intensity: {{ weather_data.snowIntensity }} mm/h</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

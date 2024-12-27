@@ -1,0 +1,82 @@
+<!-- weather/templates/weather/compare.html -->
+{% load static %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Compare Weather</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'weather/styles.css' %}">
+    <script>
+        function addPlaceInputs() {
+            const numPlaces = document.getElementById('num_places').value;
+            const placesContainer = document.getElementById('places_container');
+            placesContainer.innerHTML = '';
+            for (let i = 0; i < numPlaces; i++) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = `place_${i + 1}`;
+                input.placeholder = `Enter Place ${i + 1}`;
+                placesContainer.appendChild(input);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Compare Weather</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label for="num_places">Number of Places:</label>
+            <select id="num_places" name="num_places" onchange="addPlaceInputs()">
+                {% for i in 2|range_filter:10 %}
+                    <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+            </select>
+            <div id="places_container"></div>
+            <button type="submit">Compare</button>
+        </form>
+        
+        {% if errors %}
+            <div class="error">
+                {% for error in errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% if weather_data %}
+            <div class="weather-grid">
+                <div class="weather-row header">
+                    <div>Place Name</div>
+                    <div>Temperature</div>
+                    <div>Feels Like</div>
+                    <div>Precipitation Intensity</div>
+                    <div>Humidity</div>
+                    <div>Wind Speed</div>
+                    <div>Wind Direction</div>
+                    <div>Rain Intensity</div>
+                    <div>Snow Intensity</div>
+                    <div>Pressure (Surface Level)</div>
+                    <div>Pressure (Sea Level)</div>
+                </div>
+                {% for weather in weather_data %}
+                    <div class="weather-row">
+                        <div>{{ weather.place }}</div>
+                        <div>{{ weather.data.temperature }} °C</div>
+                        <div>{{ weather.data.temperatureApparent }} °C</div>
+                        <div>{{ weather.data.precipitationIntensity }} mm/h</div>
+                        <div>{{ weather.data.humidity }} %</div>
+                        <div>{{ weather.data.windSpeed }} m/s</div>
+                        <div>{{ weather.data.windDirection }} °</div>
+                        <div>{{ weather.data.rainIntensity }} mm/h</div>
+                        <div>{{ weather.data.snowIntensity }} mm/h</div>
+                        <div>{{ weather.data.pressureSurfaceLevel }} hPa</div>
+                        <div>{{ weather.data.pressureSeaLevel }} hPa</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
